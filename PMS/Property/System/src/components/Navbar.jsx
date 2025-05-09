@@ -7,9 +7,11 @@ function Navbar() {
   const [isBuyDropdownOpen, setIsBuyDropdownOpen] = useState(false);
   const [isRentDropdownOpen, setIsRentDropdownOpen] = useState(false);
   const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
+  const [isHelpDropdownOpen, setIsHelpDropdownOpen] = useState(false);
   const buyDropdownRef = useRef(null);
   const rentDropdownRef = useRef(null);
   const loginDropdownRef = useRef(null);
+  const helpDropdownRef = useRef(null);
   const navigate = useNavigate();
 
   const propertyOptions = [
@@ -25,35 +27,42 @@ function Navbar() {
     { name: "Commercial for Rent", path: "/rent/commercial" },
   ];
 
+  // Help options (corrected here)
+  const helpOptions = [
+    { name: "FAQ", path: "/faq" },
+    { name: "Contact Support", path: "/contact-support" },
+    { name: "User Guide", path: "/user-guide" },
+  ];
+
   const handleSelectProperty = (path) => {
     navigate(path);
     setIsBuyDropdownOpen(false);
     setIsRentDropdownOpen(false);
     setIsLoginDropdownOpen(false);
+    setIsHelpDropdownOpen(false);
   };
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      // Check if click is outside all dropdowns
       if (
         buyDropdownRef.current &&
         !buyDropdownRef.current.contains(event.target) &&
         rentDropdownRef.current &&
         !rentDropdownRef.current.contains(event.target) &&
         loginDropdownRef.current &&
-        !loginDropdownRef.current.contains(event.target)
+        !loginDropdownRef.current.contains(event.target) &&
+        helpDropdownRef.current &&
+        !helpDropdownRef.current.contains(event.target)
       ) {
         setIsBuyDropdownOpen(false);
         setIsRentDropdownOpen(false);
         setIsLoginDropdownOpen(false);
+        setIsHelpDropdownOpen(false);
       }
     }
 
-    // Add event listener for click
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Clean up the event listener on unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -64,20 +73,19 @@ function Navbar() {
       <div className="top-bar">
         <div className="logo">PropSync</div>
         <div className="right-section">
-          {/* Login Menu */}
           <div className="menu-item" ref={loginDropdownRef}>
             <div
               onClick={() => {
                 setIsLoginDropdownOpen(!isLoginDropdownOpen);
                 setIsBuyDropdownOpen(false);
                 setIsRentDropdownOpen(false);
+                setIsHelpDropdownOpen(false);
               }}
             >
               Login 🔻
             </div>
           </div>
 
-          {/* Login Dropdown rendered separately */}
           {isLoginDropdownOpen && (
             <div className="login-popup-overlay" ref={loginDropdownRef}>
               <Login show={isLoginDropdownOpen} />
@@ -91,14 +99,14 @@ function Navbar() {
       </div>
 
       <div className="bottom-bar">
-        {/* Buy Dropdown */}
         <div className="dropdown-container" ref={buyDropdownRef}>
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setIsBuyDropdownOpen(true); // Keep Buy dropdown open when clicked
-              setIsRentDropdownOpen(false); // Close Rent dropdown if open
+              setIsBuyDropdownOpen(true);
+              setIsRentDropdownOpen(false);
+              setIsHelpDropdownOpen(false);
             }}
           >
             Buy 🔻
@@ -118,14 +126,14 @@ function Navbar() {
           )}
         </div>
 
-        {/* Rent Dropdown */}
         <div className="dropdown-container" ref={rentDropdownRef}>
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              setIsRentDropdownOpen(true); // Open Rent dropdown
-              setIsBuyDropdownOpen(false); // Close Buy dropdown
+              setIsRentDropdownOpen(true);
+              setIsBuyDropdownOpen(false);
+              setIsHelpDropdownOpen(false);
             }}
           >
             Rent 🔻
@@ -145,11 +153,32 @@ function Navbar() {
           )}
         </div>
 
-        <a href="#">Sell 🔻</a>
-        <a href="#">Home Loans 🔻</a>
-        <a href="#">Home Interiors</a>
-        <a href="#">MB Advice <span className="new-badge">NEW</span> 🔻</a>
-        <a href="#">Help 🔻</a>
+        <div className="dropdown-container" ref={helpDropdownRef}>
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsHelpDropdownOpen(true);
+              setIsRentDropdownOpen(false);
+              setIsBuyDropdownOpen(false);
+            }}
+          >
+            Help 🔻
+          </a>
+          {isHelpDropdownOpen && (
+            <div className="dropdown">
+              {helpOptions.map((option, index) => (
+                <div
+                  key={index}
+                  className="dropdown-item"
+                  onClick={() => handleSelectProperty(option.path)}
+                >
+                  {option.name}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </nav>
   );
