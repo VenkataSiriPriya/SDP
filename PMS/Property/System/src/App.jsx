@@ -10,13 +10,14 @@ import Home from "./default/Home";
 import Post from "./Main/Post";
 import Apart from "./buy/Apart";
 import Villas from "./buy/Villas";
-import Luxury from "./buy/Luxury";
-import Commercial from "./buy/Commercial";
 import Plots from "./buy/Plots";
 import Projects from "./Main/Projects";
 import ProjectDetails from './Main/ProjectDetails';
 import ContactForm from "./Main/ContactForm";
 import Testimonials from "./Main/Testimonials";
+import LandlordDashboard from "./pages/LandlordDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import TenantDashboard from "./pages/TenantDashboard";
 
 // Navbar condition based on route
 const Layout = () => {
@@ -35,13 +36,15 @@ const Layout = () => {
           <Route path="/post" element={<Post />} />
           <Route path="/apartment" element={<Apart />} />
           <Route path="/villa" element={<Villas />} />
-          <Route path="/luxury" element={<Luxury />} />
-          <Route path="/commercial" element={<Commercial />} />
           <Route path="/plots" element={<Plots />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetails />} />
           <Route path="/contact" element={<ContactForm />} />
           <Route path="/testimonials" element={<Testimonials />} />
+          <Route path="/landlord" element={<LandlordDashboard />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/tenant" element={<TenantDashboard />} />
+
         </Routes>
       </main>
       <Footer />

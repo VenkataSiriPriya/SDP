@@ -8,13 +8,13 @@ const projects = [
     location: "New York City",
     description:
       "Luxury apartments with eco-friendly design. Green Valley Residency offers a peaceful and sustainable living environment in the heart of New York. The apartments feature modern amenities, beautiful landscapes, and advanced security systems for a premium lifestyle.",
-    image: "images/img3.jpeg",
-    images: ["images/img1.jpeg", "images/img2.jpeg", "images/img3.jpeg", "images/img4.jpeg", "images/img5.jpeg", "images/img6.jpeg"],
+    image: "images/projects/img1.jpg",
+    images: ["images/projects/img11.jpg", "images/projects/img12.jpg", "images/projects/img13.jpg", "images/projects/img14.jpg", "images/projects/img15.jpg", "images/projects/img16.jpg"],
     contact: {
       name: "John Doe",
       phone: "+1 123 456 7890",
       email: "johndoe@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -28,7 +28,7 @@ const projects = [
       name: "Alice Smith",
       phone: "+1 321 654 0987",
       email: "alice@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -42,7 +42,7 @@ const projects = [
       name: "Michael Lee",
       phone: "+1 987 654 3210",
       email: "michael@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -56,7 +56,7 @@ const projects = [
       name: "Sophie Green",
       phone: "+1 555 123 9876",
       email: "sophie@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -70,7 +70,7 @@ const projects = [
       name: "Robert Brown",
       phone: "+1 444 222 1111",
       email: "robert@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -84,7 +84,7 @@ const projects = [
       name: "Emily Davis",
       phone: "+1 222 333 4444",
       email: "emily@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -98,7 +98,7 @@ const projects = [
       name: "Jason Miller",
       phone: "+1 888 777 6666",
       email: "jason@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -112,7 +112,7 @@ const projects = [
       name: "Karen White",
       phone: "+1 123 321 4567",
       email: "karen@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -126,7 +126,7 @@ const projects = [
       name: "Daniel Thompson",
       phone: "+1 555 666 7777",
       email: "daniel@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -140,7 +140,7 @@ const projects = [
       name: "Laura Benson",
       phone: "+1 777 888 9999",
       email: "laura@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -154,7 +154,7 @@ const projects = [
       name: "Thomas Gray",
       phone: "+1 101 202 3030",
       email: "thomas@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -168,7 +168,7 @@ const projects = [
       name: "Jessica Moore",
       phone: "+1 404 505 6060",
       email: "jessica@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -182,7 +182,7 @@ const projects = [
       name: "Brian Hall",
       phone: "+1 303 404 5050",
       email: "brian@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -196,7 +196,7 @@ const projects = [
       name: "Rachel Adams",
       phone: "+1 606 707 8080",
       email: "rachel@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -210,7 +210,7 @@ const projects = [
       name: "Kevin Reed",
       phone: "+1 111 222 3333",
       email: "kevin@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -224,7 +224,7 @@ const projects = [
       name: "Tina Garcia",
       phone: "+1 909 808 7070",
       email: "tina@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -238,7 +238,7 @@ const projects = [
       name: "Nathan Scott",
       phone: "+1 212 343 4545",
       email: "nathan@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -252,7 +252,7 @@ const projects = [
       name: "Megan Taylor",
       phone: "+1 676 787 8989",
       email: "megan@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -266,7 +266,7 @@ const projects = [
       name: "Chris Evans",
       phone: "+1 111 999 8888",
       email: "chris@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   },
   {
@@ -280,7 +280,7 @@ const projects = [
       name: "Angela Brooks",
       phone: "+1 818 999 2020",
       email: "angela@example.com",
-      icon: "images/contact-icon.png",
+      icon: "/images/contact-removebg-preview.png",
     },
   }
 ];

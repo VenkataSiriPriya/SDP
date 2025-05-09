@@ -1,20 +1,21 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/Navbar.css";
+import Login from "../forms/Login";
 
 function Navbar() {
   const [isBuyDropdownOpen, setIsBuyDropdownOpen] = useState(false);
   const [isRentDropdownOpen, setIsRentDropdownOpen] = useState(false);
+  const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
   const buyDropdownRef = useRef(null);
   const rentDropdownRef = useRef(null);
+  const loginDropdownRef = useRef(null);
   const navigate = useNavigate();
 
   const propertyOptions = [
     { name: "Apartments", path: "/apartment" },
     { name: "Villas", path: "/villa" },
     { name: "Plots", path: "/plots" },
-    { name: "Commercial Properties", path: "/commercial" },
-    { name: "Luxury Homes", path: "/luxury" },
   ];
 
   const rentOptions = [
@@ -28,23 +29,31 @@ function Navbar() {
     navigate(path);
     setIsBuyDropdownOpen(false);
     setIsRentDropdownOpen(false);
+    setIsLoginDropdownOpen(false);
   };
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
+      // Check if click is outside all dropdowns
       if (
         buyDropdownRef.current &&
         !buyDropdownRef.current.contains(event.target) &&
         rentDropdownRef.current &&
-        !rentDropdownRef.current.contains(event.target)
+        !rentDropdownRef.current.contains(event.target) &&
+        loginDropdownRef.current &&
+        !loginDropdownRef.current.contains(event.target)
       ) {
         setIsBuyDropdownOpen(false);
         setIsRentDropdownOpen(false);
+        setIsLoginDropdownOpen(false);
       }
     }
 
+    // Add event listener for click
     document.addEventListener("mousedown", handleClickOutside);
+
+    // Clean up the event listener on unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -55,7 +64,26 @@ function Navbar() {
       <div className="top-bar">
         <div className="logo">PropSync</div>
         <div className="right-section">
-          <div className="menu-item">Login 🔻</div>
+          {/* Login Menu */}
+          <div className="menu-item" ref={loginDropdownRef}>
+            <div
+              onClick={() => {
+                setIsLoginDropdownOpen(!isLoginDropdownOpen);
+                setIsBuyDropdownOpen(false);
+                setIsRentDropdownOpen(false);
+              }}
+            >
+              Login 🔻
+            </div>
+          </div>
+
+          {/* Login Dropdown rendered separately */}
+          {isLoginDropdownOpen && (
+            <div className="login-popup-overlay" ref={loginDropdownRef}>
+              <Login show={isLoginDropdownOpen} />
+            </div>
+          )}
+
           <button className="post-property-btn">
             Post Property <span className="free-badge">FREE</span>
           </button>
