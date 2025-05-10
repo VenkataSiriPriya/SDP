@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../css/Footer.css";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { Link } from 'react-router-dom';
 
 function Footer() {
   const [email, setEmail] = useState("");
@@ -56,10 +57,10 @@ function Footer() {
         <div className="footer-section links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#">Home</a></li>
+            <li><Link to="/">Home</Link></li>
             <li><a href="#">Our Properties</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Contact</a></li>
+             <li><Link to="/services">Services</Link></li>
+             <li><Link to="/contact">Contact</Link></li>
             <li><a href="#">FAQs</a></li>
           </ul>
         </div>

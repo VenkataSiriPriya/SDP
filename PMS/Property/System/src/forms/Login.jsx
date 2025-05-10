@@ -11,7 +11,7 @@ const Login = () => {
   const [role, setRole] = useState('1');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [showLogin, setShowLogin] = useState(true);  // State to control login visibility
+  const [showLogin, setShowLogin] = useState(true);  
 
   const toggleRegister = () => {
     setRegistering(true);
@@ -32,7 +32,7 @@ const Login = () => {
         else if (user.role === 3) navigate("/tenant");
         else setError("Invalid user role.");
         
-        setShowLogin(false);  // Close login form after successful login
+        setShowLogin(false);  
       } else {
         setError("Invalid password.");
       }
@@ -51,13 +51,13 @@ const Login = () => {
         password,
       });
       setRegistering(false);
-      setShowLogin(false);  // Close login form after successful registration
+      setShowLogin(false);  
     } catch (err) {
       setError("Registration failed. Please try again.");
     }
   };
 
-  if (!showLogin) return null;  // If the login form is not shown, return null
+  if (!showLogin) return null;  
 
   return (
     <div className="d-content" onClick={(e) => e.stopPropagation()}>
@@ -113,7 +113,6 @@ const Login = () => {
             className="input-field"
             required
           >
-            <option value="1">Admin</option>
             <option value="2">Landlord</option>
             <option value="3">Tenant</option>
           </select>

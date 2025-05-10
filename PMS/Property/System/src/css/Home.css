@@ -1,5 +1,6 @@
 body {
-  background: linear-gradient(135deg, #fef9f5, #faeadf, #ffffff);
+  background: linear-gradient(135deg, #2c3e50, #faeadf, #ffffff);
+
  /* Replace with your image path */
   background-size: cover; /* Cover the entire page */
   background-position: center; /* Center the image */

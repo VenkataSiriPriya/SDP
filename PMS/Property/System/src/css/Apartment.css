@@ -490,14 +490,14 @@ html, body {
 }
 
 /* Additional Contact Options */
-.contact-options {
+.con-options {
   margin-top: 15px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.contact-options a {
+.con-options a {
   text-decoration: none;
   color: white;
   background-color: #007bff;
@@ -508,7 +508,7 @@ html, body {
   transition: background-color 0.3s ease;
 }
 
-.contact-options a:hover {
+.con-options a:hover {
   background-color: #0056b3;
 }
 

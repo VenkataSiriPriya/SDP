@@ -13,11 +13,12 @@ import Villas from "./buy/Villas";
 import Plots from "./buy/Plots";
 import Projects from "./Main/Projects";
 import ProjectDetails from './Main/ProjectDetails';
-import ContactForm from "./Main/ContactForm";
 import Testimonials from "./Main/Testimonials";
 import LandlordDashboard from "./pages/LandlordDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import TenantDashboard from "./pages/TenantDashboard";
+import Services from "./default/Services";
+import Contact from "./default/Contact";
 
 // Navbar condition based on route
 const Layout = () => {
@@ -39,11 +40,12 @@ const Layout = () => {
           <Route path="/plots" element={<Plots />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:id" element={<ProjectDetails />} />
-          <Route path="/contact" element={<ContactForm />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/landlord" element={<LandlordDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/tenant" element={<TenantDashboard />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/contact" element={<Contact />} />
 
         </Routes>
       </main>
