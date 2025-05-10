@@ -12,7 +12,7 @@ const rentData = [
 const LandlordDashboard = () => {
   return (
     <div className="dashboard-container">
-      <h1 className="dashboard-title">Landlord Dashboard</h1>
+      <h1 className="dashboard-title">PropertyOwner Dashboard</h1>
 
       <div className="stats-grid">
         <div className="stat-card blue">

@@ -91,7 +91,7 @@ function Footer() {
       <div className="footer-bottom">
         <p>© 2025 Property Management Solutions | 1234 Main St, New York, NY 10001 | Support: (123) 456-7890</p>
         <div className="footer-policy">
-          <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Sitemap</a>
+          <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <Link to="/sitemap">Sitemap</Link>
         </div>
       </div>
       

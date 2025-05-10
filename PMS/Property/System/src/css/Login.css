@@ -93,3 +93,15 @@ p {
   text-align: center;
   margin-bottom: 15px;
 }
+
+.error {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: green;
+  text-align: center;
+  margin-bottom: 10px;
+}
