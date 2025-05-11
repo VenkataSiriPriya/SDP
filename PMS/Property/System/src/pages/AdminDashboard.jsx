@@ -1,4 +1,3 @@
-// src/pages/AdminDashboard.jsx
 import React, { useState } from 'react';
 import '../css/AdminDashboard.css';
 
@@ -113,188 +112,494 @@ const tenantData = [
 ];
 
 const AdminDashboard = () => {
-  const [view, setView] = useState('dashboard'); // dashboard, landlords, tenants, landlordProfile, tenantProfile
+  const [view, setView] = useState('dashboard');
+  const [landlords, setLandlords] = useState(landlordData);
+  const [tenants, setTenants] = useState(tenantData);
   const [selectedLandlord, setSelectedLandlord] = useState(null);
   const [selectedTenant, setSelectedTenant] = useState(null);
-
+  const [editMode, setEditMode] = useState({ active: false, type: null, data: null });
+  
   // Find property name by ID
   const getPropertyNameById = (id) => {
-    for (const landlord of landlordData) {
+    for (const landlord of landlords) {
       for (const property of landlord.properties) {
-        if (property.id === id) {
-          return property.name;
-        }
+        if (property.id === id) return property.name;
       }
     }
     return "Unknown Property";
   };
 
-  const renderDashboard = () => {
-    return (
-      <div className="admin-dashboard">
-        <h2>Welcome, Admin</h2>
-        <div className="dashboard-stats">
-          <div className="stat-card">
-            <h3>Total Landlords</h3>
-            <p className="stat-number">{landlordData.length}</p>
-          </div>
-          <div className="stat-card">
-            <h3>Total Tenants</h3>
-            <p className="stat-number">{tenantData.length}</p>
-          </div>
-          <div className="stat-card">
-            <h3>Total Properties</h3>
-            <p className="stat-number">
-              {landlordData.reduce((total, landlord) => total + landlord.propertyCount, 0)}
-            </p>
-          </div>
-        </div>
+  // Handle delete operations
+  const handleDelete = (type, id) => {
+    if (window.confirm(`Are you sure you want to delete this ${type}?`)) {
+      if (type === 'landlord') {
+        setLandlords(landlords.filter(landlord => landlord.id !== id));
+        if (selectedLandlord && selectedLandlord.id === id) {
+          setSelectedLandlord(null);
+          setView('landlords');
+        }
+      } else if (type === 'tenant') {
+        setTenants(tenants.filter(tenant => tenant.id !== id));
+        if (selectedTenant && selectedTenant.id === id) {
+          setSelectedTenant(null);
+          setView('tenants');
+        }
+      } else if (type === 'property') {
+        const updatedLandlords = [...landlords];
+        const landlordIndex = updatedLandlords.findIndex(l => 
+          l.properties.some(p => p.id === id)
+        );
         
-        <section className="admin-section">
-          <h3>Landlord Management</h3>
-          <button className="action-button" onClick={() => setView('landlords')}>
-            View All Landlords
-          </button>
-          <ul className="feature-list">
-            <li>View detailed landlord profiles</li>
-            <li>Add/Edit/Remove landlords</li>
-            <li>View landlord properties</li>
-            <li>Landlord performance metrics</li>
-          </ul>
-        </section>
-        
-        <section className="admin-section">
-          <h3>Tenant Management</h3>
-          <button className="action-button" onClick={() => setView('tenants')}>
-            View All Tenants
-          </button>
-          <ul className="feature-list">
-            <li>View detailed tenant profiles</li>
-            <li>Add/Edit/Remove tenants</li>
-            <li>Assign tenants to properties</li>
-            <li>Track lease agreements and payments</li>
-          </ul>
-        </section>
-      </div>
-    );
+        if (landlordIndex !== -1) {
+          updatedLandlords[landlordIndex].properties = 
+            updatedLandlords[landlordIndex].properties.filter(p => p.id !== id);
+          updatedLandlords[landlordIndex].propertyCount -= 1;
+          setLandlords(updatedLandlords);
+          setSelectedLandlord(updatedLandlords[landlordIndex]);
+        }
+      }
+    }
   };
 
-  const renderLandlords = () => {
-    return (
-      <div className="landlords-view">
-        <div className="view-header">
-          <h2>Landlord Management</h2>
-          <button className="back-button" onClick={() => setView('dashboard')}>
-            Back to Dashboard
-          </button>
+  // Handle edit operations
+  const handleEdit = (type, data) => {
+    setEditMode({
+      active: true,
+      type,
+      data: {...data}
+    });
+  };
+
+  // Handle save after editing
+  const handleSave = () => {
+    const { type, data } = editMode;
+    
+    if (type === 'landlord') {
+      const updatedLandlords = landlords.map(landlord => 
+        landlord.id === data.id ? data : landlord
+      );
+      setLandlords(updatedLandlords);
+      setSelectedLandlord(data);
+    } else if (type === 'tenant') {
+      const updatedTenants = tenants.map(tenant => 
+        tenant.id === data.id ? data : tenant
+      );
+      setTenants(updatedTenants);
+      setSelectedTenant(data);
+    } else if (type === 'property') {
+      const updatedLandlords = [...landlords];
+      const landlordIndex = updatedLandlords.findIndex(l => 
+        l.properties.some(p => p.id === data.id)
+      );
+      
+      if (landlordIndex !== -1) {
+        updatedLandlords[landlordIndex].properties = 
+          updatedLandlords[landlordIndex].properties.map(p => 
+            p.id === data.id ? data : p
+          );
+        setLandlords(updatedLandlords);
+        setSelectedLandlord(updatedLandlords[landlordIndex]);
+      }
+    }
+    
+    setEditMode({ active: false, type: null, data: null });
+  };
+
+  // Handle form changes for edit mode
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setEditMode(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        [name]: value
+      }
+    }));
+  };
+
+  // Render edit form based on type
+  const renderEditForm = () => {
+    const { type, data } = editMode;
+    
+    if (type === 'landlord') {
+      return (
+        <div className="edit-form">
+          <h3>Edit Landlord</h3>
+          <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+            <div className="form-group">
+              <label>Name:</label>
+              <input 
+                type="text" 
+                name="name" 
+                value={data.name} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Email:</label>
+              <input 
+                type="email" 
+                name="email" 
+                value={data.email} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone:</label>
+              <input 
+                type="text" 
+                name="phone" 
+                value={data.phone} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Rating:</label>
+              <input 
+                type="number" 
+                name="rating" 
+                min="1" 
+                max="5" 
+                step="0.1" 
+                value={data.rating} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="save-btn">Save</button>
+              <button 
+                type="button" 
+                className="cancel-btn" 
+                onClick={() => setEditMode({ active: false, type: null, data: null })}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-        
-        <div className="action-bar">
-          <input type="text" placeholder="Search landlords..." className="search-input" />
-          <button className="add-button">+ Add New Landlord</button>
+      );
+    } else if (type === 'tenant') {
+      return (
+        <div className="edit-form">
+          <h3>Edit Tenant</h3>
+          <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+            <div className="form-group">
+              <label>Name:</label>
+              <input 
+                type="text" 
+                name="name" 
+                value={data.name} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Email:</label>
+              <input 
+                type="email" 
+                name="email" 
+                value={data.email} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone:</label>
+              <input 
+                type="text" 
+                name="phone" 
+                value={data.phone} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Unit Number:</label>
+              <input 
+                type="text" 
+                name="unitNumber" 
+                value={data.unitNumber} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Lease End:</label>
+              <input 
+                type="date" 
+                name="leaseEnd" 
+                value={data.leaseEnd} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Rent Amount:</label>
+              <input 
+                type="number" 
+                name="rentAmount" 
+                value={data.rentAmount} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Payment Status:</label>
+              <select 
+                name="paymentStatus" 
+                value={data.paymentStatus} 
+                onChange={handleFormChange}
+              >
+                <option value="Current">Current</option>
+                <option value="Late">Late</option>
+              </select>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="save-btn">Save</button>
+              <button 
+                type="button" 
+                className="cancel-btn" 
+                onClick={() => setEditMode({ active: false, type: null, data: null })}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
-        
-        <div className="landlord-list">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Properties</th>
-                <th>Rating</th>
-                <th>Actions</th>
+      );
+    } else if (type === 'property') {
+      return (
+        <div className="edit-form">
+          <h3>Edit Property</h3>
+          <form onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+            <div className="form-group">
+              <label>Property Name:</label>
+              <input 
+                type="text" 
+                name="name" 
+                value={data.name} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Address:</label>
+              <input 
+                type="text" 
+                name="address" 
+                value={data.address} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-group">
+              <label>Units:</label>
+              <input 
+                type="number" 
+                name="units" 
+                min="1" 
+                value={data.units} 
+                onChange={handleFormChange} 
+              />
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="save-btn">Save</button>
+              <button 
+                type="button" 
+                className="cancel-btn" 
+                onClick={() => setEditMode({ active: false, type: null, data: null })}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      );
+    }
+    
+    return null;
+  };
+
+  // Dashboard view
+  const renderDashboard = () => (
+    <div className="admin-dashboard">
+      <h2>Welcome, Admin</h2>
+      <div className="dashboard-stats">
+        <div className="stat-card">
+          <h3>Total Landlords</h3>
+          <p className="stat-number">{landlords.length}</p>
+        </div>
+        <div className="stat-card">
+          <h3>Total Tenants</h3>
+          <p className="stat-number">{tenants.length}</p>
+        </div>
+        <div className="stat-card">
+          <h3>Total Properties</h3>
+          <p className="stat-number">
+            {landlords.reduce((total, landlord) => total + landlord.propertyCount, 0)}
+          </p>
+        </div>
+      </div>
+      
+      <section className="admin-section">
+        <h3>Landlord Management</h3>
+        <button className="action-button" onClick={() => setView('landlords')}>
+          View All Landlords
+        </button>
+        <ul className="feature-list">
+          <li>View detailed landlord profiles</li>
+          <li>Add/Edit/Remove landlords</li>
+          <li>View landlord properties</li>
+          <li>Landlord performance metrics</li>
+        </ul>
+      </section>
+      
+      <section className="admin-section">
+        <h3>Tenant Management</h3>
+        <button className="action-button" onClick={() => setView('tenants')}>
+          View All Tenants
+        </button>
+        <ul className="feature-list">
+          <li>View detailed tenant profiles</li>
+          <li>Add/Edit/Remove tenants</li>
+          <li>Assign tenants to properties</li>
+          <li>Track lease agreements and payments</li>
+        </ul>
+      </section>
+    </div>
+  );
+
+  // Landlords view
+  const renderLandlords = () => (
+    <div className="landlords-view">
+      <div className="view-header">
+        <h2>Landlord Management</h2>
+        <button className="back-button" onClick={() => setView('dashboard')}>
+          Back to Dashboard
+        </button>
+      </div>
+      
+      <div className="action-bar">
+        <input type="text" placeholder="Search landlords..." className="search-input" />
+        <button className="add-button">+ Add New Landlord</button>
+      </div>
+      
+      <div className="landlord-list">
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Properties</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {landlords.map(landlord => (
+              <tr key={landlord.id}>
+                <td>
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedLandlord(landlord);
+                    setView('landlordProfile');
+                  }}>
+                    {landlord.name}
+                  </a>
+                </td>
+                <td>{landlord.email}</td>
+                <td>{landlord.phone}</td>
+                <td>{landlord.propertyCount}</td>
+                <td>{landlord.rating}/5.0</td>
+                <td>
+                  <button 
+                    className="action-btn edit" 
+                    onClick={() => handleEdit('landlord', landlord)}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    className="action-btn delete" 
+                    onClick={() => handleDelete('landlord', landlord.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {landlordData.map(landlord => (
-                <tr key={landlord.id}>
-                  <td>
-                    <a href="#" onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedLandlord(landlord);
-                      setView('landlordProfile');
-                    }}>
-                      {landlord.name}
-                    </a>
-                  </td>
-                  <td>{landlord.email}</td>
-                  <td>{landlord.phone}</td>
-                  <td>{landlord.propertyCount}</td>
-                  <td>{landlord.rating}/5.0</td>
-                  <td>
-                    <button className="action-btn edit">Edit</button>
-                    <button className="action-btn delete">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    );
-  };
 
-  const renderTenants = () => {
-    return (
-      <div className="tenants-view">
-        <div className="view-header">
-          <h2>Tenant Management</h2>
-          <button className="back-button" onClick={() => setView('dashboard')}>
-            Back to Dashboard
-          </button>
-        </div>
-        
-        <div className="action-bar">
-          <input type="text" placeholder="Search tenants..." className="search-input" />
-          <button className="add-button">+ Add New Tenant</button>
-        </div>
-        
-        <div className="tenant-list">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Property</th>
-                <th>Unit</th>
-                <th>Lease End</th>
-                <th>Payment Status</th>
-                <th>Actions</th>
+      {editMode.active && editMode.type === 'landlord' && renderEditForm()}
+    </div>
+  );
+
+  // Tenants view
+  const renderTenants = () => (
+    <div className="tenants-view">
+      <div className="view-header">
+        <h2>Tenant Management</h2>
+        <button className="back-button" onClick={() => setView('dashboard')}>
+          Back to Dashboard
+        </button>
+      </div>
+      
+      <div className="action-bar">
+        <input type="text" placeholder="Search tenants..." className="search-input" />
+        <button className="add-button">+ Add New Tenant</button>
+      </div>
+      
+      <div className="tenant-list">
+        <table className="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Property</th>
+              <th>Unit</th>
+              <th>Lease End</th>
+              <th>Payment Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tenants.map(tenant => (
+              <tr key={tenant.id} className={tenant.paymentStatus === 'Late' ? 'status-warning' : ''}>
+                <td>
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    setSelectedTenant(tenant);
+                    setView('tenantProfile');
+                  }}>
+                    {tenant.name}
+                  </a>
+                </td>
+                <td>{tenant.email}</td>
+                <td>{getPropertyNameById(tenant.propertyId)}</td>
+                <td>{tenant.unitNumber}</td>
+                <td>{tenant.leaseEnd}</td>
+                <td className={`status-${tenant.paymentStatus.toLowerCase()}`}>
+                  {tenant.paymentStatus}
+                </td>
+                <td>
+                  <button 
+                    className="action-btn edit" 
+                    onClick={() => handleEdit('tenant', tenant)}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    className="action-btn delete" 
+                    onClick={() => handleDelete('tenant', tenant.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {tenantData.map(tenant => (
-                <tr key={tenant.id} className={tenant.paymentStatus === 'Late' ? 'status-warning' : ''}>
-                  <td>
-                    <a href="#" onClick={(e) => {
-                      e.preventDefault();
-                      setSelectedTenant(tenant);
-                      setView('tenantProfile');
-                    }}>
-                      {tenant.name}
-                    </a>
-                  </td>
-                  <td>{tenant.email}</td>
-                  <td>{getPropertyNameById(tenant.propertyId)}</td>
-                  <td>{tenant.unitNumber}</td>
-                  <td>{tenant.leaseEnd}</td>
-                  <td className={`status-${tenant.paymentStatus.toLowerCase()}`}>
-                    {tenant.paymentStatus}
-                  </td>
-                  <td>
-                    <button className="action-btn edit">Edit</button>
-                    <button className="action-btn delete">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
-    );
-  };
 
+      {editMode.active && editMode.type === 'tenant' && renderEditForm()}
+    </div>
+  );
+
+  // Landlord profile view
   const renderLandlordProfile = () => {
     if (!selectedLandlord) return <div>No landlord selected</div>;
 
@@ -318,7 +623,12 @@ const AdminDashboard = () => {
               <p className="profile-since">Member since: {selectedLandlord.joinDate}</p>
             </div>
             <div className="profile-actions">
-              <button className="profile-edit-btn">Edit Profile</button>
+              <button 
+                className="profile-edit-btn" 
+                onClick={() => handleEdit('landlord', selectedLandlord)}
+              >
+                Edit Profile
+              </button>
             </div>
           </div>
           
@@ -369,7 +679,18 @@ const AdminDashboard = () => {
                     <td>{property.units}</td>
                     <td>
                       <button className="action-btn">View</button>
-                      <button className="action-btn edit">Edit</button>
+                      <button 
+                        className="action-btn edit"
+                        onClick={() => handleEdit('property', property)}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        className="action-btn delete"
+                        onClick={() => handleDelete('property', property.id)}
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -377,10 +698,15 @@ const AdminDashboard = () => {
             </table>
           </div>
         </div>
+
+        {editMode.active && 
+         (editMode.type === 'landlord' || editMode.type === 'property') && 
+         renderEditForm()}
       </div>
     );
   };
 
+  // Tenant profile view
   const renderTenantProfile = () => {
     if (!selectedTenant) return <div>No tenant selected</div>;
     
@@ -407,7 +733,12 @@ const AdminDashboard = () => {
               </p>
             </div>
             <div className="profile-actions">
-              <button className="profile-edit-btn">Edit Profile</button>
+              <button 
+                className="profile-edit-btn"
+                onClick={() => handleEdit('tenant', selectedTenant)}
+              >
+                Edit Profile
+              </button>
             </div>
           </div>
           
@@ -488,13 +819,14 @@ const AdminDashboard = () => {
             </table>
           </div>
         </div>
+
+        {editMode.active && editMode.type === 'tenant' && renderEditForm()}
       </div>
     );
   };
 
   return (
     <div className="admin-dashboard-container">
-      {/* Add link for Google Font - Dancing Script */}
       <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet" />
       
       <header className="admin-header">
@@ -502,7 +834,6 @@ const AdminDashboard = () => {
         <div className="user-menu">
           <span className="user-name">Admin User</span>
           <button className="logout-btn" onClick={() => window.location.href = '/'}>Logout</button>
-
         </div>
       </header>
 
@@ -510,39 +841,23 @@ const AdminDashboard = () => {
         <aside className="admin-sidebar">
           <nav className="admin-nav">
             <ul>
-              <li className={view === 'dashboard' ? 'active' : ''}>
-                <a href="#" onClick={(e) => {
-                  e.preventDefault();
-                  setView('dashboard');
-                }}>Dashboard</a>
-              </li>
-              <li className={view === 'landlords' || view === 'landlordProfile' ? 'active' : ''}>
-                <a href="#" onClick={(e) => {
-                  e.preventDefault();
-                  setView('landlords');
-                }}>Landlords</a>
-              </li>
-              <li className={view === 'tenants' || view === 'tenantProfile' ? 'active' : ''}>
-                <a href="#" onClick={(e) => {
-                  e.preventDefault();
-                  setView('tenants');
-                }}>Tenants</a>
-              </li>
-              <li>
-                <a href="#">Properties</a>
-              </li>
-              <li>
-                <a href="#">Maintenance</a>
-              </li>
-              <li>
-                <a href="#">Finances</a>
-              </li>
-              <li>
-                <a href="#">Reports</a>
-              </li>
-              <li>
-                <a href="#">Settings</a>
-              </li>
+              {['dashboard', 'landlords', 'tenants'].map(item => (
+                <li key={item} className={
+                  view === item || 
+                  (view === 'landlordProfile' && item === 'landlords') ||
+                  (view === 'tenantProfile' && item === 'tenants') 
+                    ? 'active' : ''
+                }>
+                  <a href="#" onClick={(e) => {
+                    e.preventDefault();
+                    if (['dashboard', 'landlords', 'tenants'].includes(item)) {
+                      setView(item);
+                    }
+                  }}>
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </a>
+                </li>
+              ))}
             </ul>
           </nav>
         </aside>

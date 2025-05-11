@@ -1,101 +1,69 @@
 .dashboard-container {
-  padding: 1.5rem;
-  background-color: #f9fafb;
-  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
 }
 
 .dashboard-title {
   font-size: 2rem;
   font-weight: bold;
-  color: #1f2937;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-.stats-grid {
+.landlord-form {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.landlord-form input {
+  padding: 0.5rem;
+  flex: 1;
+}
+
+.action-btn.blue {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+}
+
+.landlord-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }
 
-.stat-card {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  border-radius: 1rem;
-  background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.stat-icon {
-  margin-right: 1rem;
-  width: 24px;
-  height: 24px;
-}
-
-.stat-value {
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.stat-card.blue .stat-icon {
-  color: #2563eb;
-}
-
-.stat-card.green .stat-icon {
-  color: #16a34a;
-}
-
-.stat-card.yellow .stat-icon {
-  color: #f59e0b;
-}
-
-.stat-card.purple .stat-icon {
-  color: #7c3aed;
-}
-
-.chart-card {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-}
-
-.chart-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  color: #1f2937;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 1rem;
-}
-
-.action-btn {
-  padding: 0.75rem 1.5rem;
-  border: none;
+.landlord-card {
+  background: #f9f9f9;
   border-radius: 0.75rem;
-  color: white;
-  font-weight: 500;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-btn, .delete-btn {
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
-.action-btn.blue {
-  background-color: #2563eb;
+.chart-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.action-btn.green {
-  background-color: #16a34a;
-}
-
-.action-btn:hover {
-  opacity: 0.9;
+.chart-title {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
 }

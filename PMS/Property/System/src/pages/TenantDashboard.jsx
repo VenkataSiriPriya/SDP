@@ -1,13 +1,22 @@
 import React from 'react';
-import '../css/TenantDashboard.css'; 
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import '../css/TenantDashboard.css';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { Home, CreditCard, LifeBuoy, FileText } from 'lucide-react';
 
+// Sample data for rent payments
 const rentData = [
   { month: 'Jan', rent: 800 },
   { month: 'Feb', rent: 820 },
   { month: 'Mar', rent: 850 },
   { month: 'Apr', rent: 870 },
+];
+
+// Sample data for maintenance requests
+const maintenanceData = [
+  { month: 'Jan', requests: 1 },
+  { month: 'Feb', requests: 2 },
+  { month: 'Mar', requests: 1 },
+  { month: 'Apr', requests: 3 },
 ];
 
 const TenantDashboard = () => {
@@ -55,6 +64,18 @@ const TenantDashboard = () => {
             <Tooltip />
             <Bar dataKey="rent" fill="#4f46e5" />
           </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      <div className="chart-card">
+        <h2 className="chart-title">Maintenance Requests</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={maintenanceData}>
+            <XAxis dataKey="month" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="requests" stroke="#16a34a" strokeWidth={3} />
+          </LineChart>
         </ResponsiveContainer>
       </div>
 

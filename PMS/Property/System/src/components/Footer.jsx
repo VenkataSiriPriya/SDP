@@ -58,10 +58,9 @@ function Footer() {
           <h3>Quick Links</h3>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><a href="#">Our Properties</a></li>
              <li><Link to="/services">Services</Link></li>
              <li><Link to="/contact">Contact</Link></li>
-            <li><a href="#">FAQs</a></li>
+            <li><Link to="/FAQ">FAQs</Link></li>
           </ul>
         </div>
 
@@ -91,7 +90,7 @@ function Footer() {
       <div className="footer-bottom">
         <p>© 2025 Property Management Solutions | 1234 Main St, New York, NY 10001 | Support: (123) 456-7890</p>
         <div className="footer-policy">
-          <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <Link to="/sitemap">Sitemap</Link>
+          <Link to="/privacy">PrivacyPolicy</Link> | <a href="#">Terms of Service</a> | <Link to="/sitemap">Sitemap</Link>
         </div>
       </div>
       

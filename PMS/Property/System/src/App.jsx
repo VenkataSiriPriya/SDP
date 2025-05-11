@@ -21,6 +21,9 @@ import TenantDashboard from "./pages/TenantDashboard";
 import Services from "./default/Services";
 import Contact from "./default/Contact";
 import Sitemap from "./default/Sitemap";
+import FAQ from "./default/FAQ";
+import Privacypolicy from "./default/Privacypolicy";
+
 
 const Layout = () => {
   const location = useLocation();
@@ -50,6 +53,8 @@ const Layout = () => {
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/sitemap" element={<Sitemap />} />
+          <Route path="/FAQ" element={<FAQ />} />
+          <Route path="/privacy" element={<Privacypolicy />} />
         </Routes>
       </main>
 

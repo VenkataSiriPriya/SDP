@@ -439,3 +439,50 @@ tr.status-warning {
     margin-bottom: 1rem;
   }
 }
+
+/* Add/Edit/Delete Buttons for Data Management */
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.btn-add {
+  background-color: #2ecc71;
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.btn-add:hover {
+  background-color: #27ae60;
+}
+
+.btn-edit {
+  background-color: #f1c40f;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-edit:hover {
+  background-color: #d4ac0d;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}

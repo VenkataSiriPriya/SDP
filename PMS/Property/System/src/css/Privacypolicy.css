@@ -1,0 +1,40 @@
+/* src/components/PrivacyPolicy.css */
+
+.privacy-policy-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.policy-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #2c3e50;
+}
+
+.policy-date {
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 2rem;
+  color: #7f8c8d;
+}
+
+.policy-section {
+  margin-bottom: 1.5rem;
+}
+
+.policy-section h2 {
+  font-size: 1.5rem;
+  color: #34495e;
+  margin-bottom: 0.5rem;
+}
+
+.policy-section p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+}
