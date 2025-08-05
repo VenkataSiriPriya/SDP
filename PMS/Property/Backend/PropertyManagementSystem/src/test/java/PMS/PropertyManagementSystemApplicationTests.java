@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class PropertyManagementSystemApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void contextLoad() {
 	}
 
 }
